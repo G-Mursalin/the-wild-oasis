@@ -1,0 +1,13 @@
+.row {
+  display: flex;
+}
+
+.vertical {
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.horizontal {
+  justify-content: space-between;
+  align-items: center;
+}
