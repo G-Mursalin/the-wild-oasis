@@ -9,7 +9,9 @@ function AppLayout() {
       <Header />
       <Sidebar />
       <main>
-        <Outlet />
+        <div className={styles.container}>
+          <Outlet />
+        </div>
       </main>
     </div>
   );
