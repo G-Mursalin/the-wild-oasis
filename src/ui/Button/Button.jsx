@@ -6,12 +6,14 @@ function Button({
   disabled = false,
   onClick,
   children,
+  type = "button",
 }) {
   return (
     <button
       className={`${styles.button} ${styles[variation]} ${styles[size]}`}
       onClick={onClick}
       disabled={disabled}
+      type={type}
     >
       {children || "click me"}
     </button>
