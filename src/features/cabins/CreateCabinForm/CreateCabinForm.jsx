@@ -2,24 +2,39 @@ import { useForm } from "react-hook-form";
 import Button from "../../../ui/Button/Button";
 import FormRow from "../../../ui/FormRow/FormRow";
 import { useCreateCabin } from "../hooks/useCreateCabin";
+import { useEditCabin } from "../hooks/useEditCabin";
 
-function CreateCabinForm() {
+function CreateCabinForm({ cabinToEdit = {} }) {
+  const { id: editId, ...editValues } = cabinToEdit;
+  const isEditSession = Boolean(editId);
+
+  const { register, handleSubmit, reset, getValues, formState } = useForm({
+    defaultValues: isEditSession ? editValues : {},
+  });
+
   const { isCreating, createCabin } = useCreateCabin();
-  const { register, handleSubmit, reset, getValues, formState } = useForm();
+  const { isEditing, editCabin } = useEditCabin();
+  const isMutating = isCreating || isEditing;
 
   // Get Form Errors
   const { errors } = formState;
 
   // Handle Form Submit
   const onSubmitForm = (data) => {
-    createCabin(
-      { ...data, image: data.image[0] },
-      {
-        onSuccess: () => {
-          reset();
-        },
-      }
-    );
+    const image = typeof data.image === "string" ? data.image : data.image[0];
+
+    if (!isEditSession) {
+      createCabin(
+        { ...data, image: image },
+        {
+          onSuccess: () => {
+            reset();
+          },
+        }
+      );
+    } else {
+      editCabin({ ...data, image: image, id: editId });
+    }
   };
 
   return (
@@ -28,7 +43,7 @@ function CreateCabinForm() {
         <input
           type="text"
           id="name"
-          disabled={isCreating}
+          disabled={isMutating}
           {...register("name", { required: "This field is required" })}
         />
       </FormRow>
@@ -37,7 +52,7 @@ function CreateCabinForm() {
         <input
           type="number"
           id="maxCapacity"
-          disabled={isCreating}
+          disabled={isMutating}
           {...register("maxCapacity", {
             required: "This field is required",
             min: { value: 1, message: "Capacity should me at least 1" },
@@ -49,7 +64,7 @@ function CreateCabinForm() {
         <input
           type="number"
           id="regularPrice"
-          disabled={isCreating}
+          disabled={isMutating}
           min={0}
           {...register("regularPrice", {
             required: "This field is required",
@@ -64,7 +79,7 @@ function CreateCabinForm() {
           id="discount"
           defaultValue={0}
           min={0}
-          disabled={isCreating}
+          disabled={isMutating}
           {...register("discount", {
             required: "This field is required",
             min: { value: 0, message: "Price should me at least 1" },
@@ -80,17 +95,19 @@ function CreateCabinForm() {
           type="number"
           id="description"
           defaultValue=""
-          disabled={isCreating}
+          disabled={isMutating}
           {...register("description", { required: "This field is required" })}
         />
       </FormRow>
 
-      <FormRow label="Cabin photo">
+      <FormRow label="Cabin photo" error={errors?.image?.message}>
         <input
           type="file"
           id="image"
           accept="image/*"
-          {...register("image", { required: "This field is required" })}
+          {...register("image", {
+            required: isEditSession ? false : "This field is required",
+          })}
         />
       </FormRow>
 
@@ -99,7 +116,7 @@ function CreateCabinForm() {
           Cancel
         </Button>
         <Button disabled={isCreating} type="submit">
-          Add cabin
+          {isEditSession ? "Edit cabin" : "Add cabin"}
         </Button>
       </FormRow>
     </form>

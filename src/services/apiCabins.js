@@ -1,4 +1,5 @@
-import supabase, { supabaseUrl } from "./supabase";
+import { createImagePath } from "../utils/helpers";
+import supabase from "./supabase";
 
 // Get All Cabins
 export async function getCabins() {
@@ -39,14 +40,8 @@ export async function deleteCabin(id) {
 
 // Create Cabin
 export async function createCabin(newCabin) {
-  const imageName = `${newCabin.image.name}-${Math.random()}`.replaceAll(
-    "/",
-    ""
-  );
-
-  const imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
-
-  // 1. Create Image
+  const { uniqueImageName, imagePath } = createImagePath(newCabin.image.name);
+  // 1. Create Cabin
   const { data, error } = await supabase
     .from("cabins")
     .insert([{ ...newCabin, image: imagePath }])
@@ -61,7 +56,7 @@ export async function createCabin(newCabin) {
   // 2. Upload Image
   const { error: storageError } = await supabase.storage
     .from("cabin-images")
-    .upload(imageName, newCabin.image);
+    .upload(uniqueImageName, newCabin.image);
 
   // If any error for Image upload then delete cabin too
   if (storageError) {
@@ -71,6 +66,53 @@ export async function createCabin(newCabin) {
     throw new Error(
       "Cabin image could not be created and the cabin was not created"
     );
+  }
+
+  return data;
+}
+
+//Edit Cabin
+export async function editCabin(newCabin) {
+  let newImagePath = newCabin.image;
+
+  if (typeof newCabin.image != "string") {
+    // 1. Create image path
+    const { uniqueImageName, imagePath } = createImagePath(newCabin.image.name);
+    newImagePath = imagePath;
+
+    // 2. Upload New Image
+    const { error: storageError } = await supabase.storage
+      .from("cabin-images")
+      .upload(uniqueImageName, newCabin.image);
+    // If any error for Image upload
+    if (storageError) {
+      console.log(storageError);
+      throw new Error("New cabin image could not be uploaded");
+    }
+
+    // 3. Delete old image from storage
+    // Get storage image path before update cabin image
+    const { data: previousCabinImagePath } = await supabase
+      .from("cabins")
+      .select("image")
+      .eq("id", newCabin.id);
+
+    const imageUrl = previousCabinImagePath[0].image;
+    const imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+
+    await supabase.storage.from("cabin-images").remove([imageName]);
+  }
+
+  // Update a Cabin
+  const { data, error } = await supabase
+    .from("cabins")
+    .update({ ...newCabin, image: newImagePath })
+    .eq("id", newCabin.id);
+
+  // Throw Error
+  if (error) {
+    console.error(error);
+    throw new Error("Cabin could not be updated");
   }
 
   return data;

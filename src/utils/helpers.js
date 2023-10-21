@@ -1,4 +1,16 @@
+import { supabaseUrl } from "../services/supabase";
+
+// Formatting currency to USD
 export const formatCurrency = (value) =>
   new Intl.NumberFormat("en", { style: "currency", currency: "USD" }).format(
     value
   );
+
+// Creating unique image name and path
+export const createImagePath = (imageName) => {
+  const uniqueImageName = `${imageName}-${Math.random()}`.replaceAll("/", "");
+
+  const imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${uniqueImageName}`;
+
+  return { uniqueImageName, imagePath };
+};
