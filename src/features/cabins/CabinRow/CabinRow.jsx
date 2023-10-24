@@ -5,6 +5,7 @@ import { useDeleteCabin } from "../hooks/useDeleteCabin";
 import CreateCabinForm from "../CreateCabinForm/CreateCabinForm";
 import Modal from "../../../ui/Modal/Modal";
 import ConfirmDelete from "../../../ui/ConfirmDelete/ConfirmDelete";
+import Table from "../../../ui/Table/Table";
 
 function CabinRow({ cabin }) {
   const { isDeleting, deleteCabin } = useDeleteCabin();
@@ -19,62 +20,55 @@ function CabinRow({ cabin }) {
   } = cabin;
 
   return (
-    <tr className={styles.row}>
+    <Table.Row>
       {/* Img */}
-      <td>
-        <img className={styles.cabinImg} src={image} />
-      </td>
-      {/* Name */}
-      <td>
-        <div className={styles.cabinName}>{name}</div>
-      </td>
-      {/* Capacity */}
-      <td>
-        <div>Fits up to {maxCapacity} guests</div>
-      </td>
-      {/* Price */}
-      <td>
-        <div className={styles.cabinPrice}>{formatCurrency(regularPrice)}</div>
-      </td>
-      {/* Discount */}
-      <td>
-        {discount ? (
-          <div className={styles.cabinDiscount}>{formatCurrency(discount)}</div>
-        ) : (
-          <span>&mdash;</span>
-        )}
-      </td>
-      {/* Actions */}
-      <td>
-        <div>
-          <Modal>
-            {/* Edit Cabin */}
-            <Modal.Open opens="edit">
-              <button>
-                <HiPencil />
-              </button>
-            </Modal.Open>
-            <Modal.Window name="edit">
-              <CreateCabinForm cabinToEdit={cabin} />
-            </Modal.Window>
+      <img className={styles.cabinImg} src={image} />
 
-            {/* Delete Cabin */}
-            <Modal.Open opens="delete">
-              <button>
-                <HiTrash />
-              </button>
-            </Modal.Open>
-            <Modal.Window name="delete">
-              <ConfirmDelete
-                resourceName="cabins"
-                disabled={isDeleting}
-                onConfirm={() => deleteCabin(cabinId)}
-              />
-            </Modal.Window>
-          </Modal>
-        </div>
-      </td>
-    </tr>
+      {/* Name */}
+      <div className={styles.cabinName}>{name}</div>
+
+      {/* Capacity */}
+      <div>Fits up to {maxCapacity} guests</div>
+
+      {/* Price */}
+      <div className={styles.cabinPrice}>{formatCurrency(regularPrice)}</div>
+
+      {/* Discount */}
+      {discount ? (
+        <div className={styles.cabinDiscount}>{formatCurrency(discount)}</div>
+      ) : (
+        <span>&mdash;</span>
+      )}
+
+      {/* Actions */}
+      <div>
+        <Modal>
+          {/* Edit Cabin */}
+          <Modal.Open opens="edit">
+            <button>
+              <HiPencil />
+            </button>
+          </Modal.Open>
+          <Modal.Window name="edit">
+            <CreateCabinForm cabinToEdit={cabin} />
+          </Modal.Window>
+
+          {/* Delete Cabin */}
+          <Modal.Open opens="delete">
+            <button>
+              <HiTrash />
+            </button>
+          </Modal.Open>
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              resourceName="cabins"
+              disabled={isDeleting}
+              onConfirm={() => deleteCabin(cabinId)}
+            />
+          </Modal.Window>
+        </Modal>
+      </div>
+    </Table.Row>
   );
 }
 
