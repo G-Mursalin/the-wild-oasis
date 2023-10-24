@@ -4,7 +4,7 @@ import FormRow from "../../../ui/FormRow/FormRow";
 import { useCreateCabin } from "../hooks/useCreateCabin";
 import { useEditCabin } from "../hooks/useEditCabin";
 
-function CreateCabinForm({ cabinToEdit = {} }) {
+function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditSession = Boolean(editId);
 
@@ -29,16 +29,24 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         {
           onSuccess: () => {
             reset();
+            onCloseModal?.();
           },
         }
       );
     } else {
-      editCabin({ ...data, image: image, id: editId });
+      editCabin(
+        { ...data, image: image, id: editId },
+        {
+          onSuccess: () => {
+            onCloseModal?.();
+          },
+        }
+      );
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)}>
+    <form onSubmit={handleSubmit(onSubmitForm)} style={{ width: "90rem" }}>
       <FormRow label="Cabin name" error={errors?.name?.message}>
         <input
           type="text"
@@ -112,11 +120,15 @@ function CreateCabinForm({ cabinToEdit = {} }) {
       </FormRow>
 
       <FormRow>
-        <Button variation="secondary" type="reset">
+        <Button
+          onClick={() => onCloseModal?.()}
+          variation="secondary"
+          type="reset"
+        >
           Cancel
         </Button>
-        <Button disabled={isCreating} type="submit">
-          {isEditSession ? "Edit cabin" : "Add cabin"}
+        <Button disabled={isCreating || isEditing} type="submit">
+          {isEditSession ? "Edit cabin" : "Create New Cabin"}
         </Button>
       </FormRow>
     </form>
