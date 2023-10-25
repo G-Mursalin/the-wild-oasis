@@ -4,6 +4,7 @@ import SpinnerLarge from "../../../ui/Spinner/SpinnerLarge/SpinnerLarge";
 import Table from "../../../ui/Table/Table";
 import CabinRow from "../CabinRow/CabinRow";
 import { useCabins } from "../hooks/useCabins";
+import Empty from "../../../ui/Empty/Empty";
 
 function CabinTable() {
   const { isLoading, cabins } = useCabins();
@@ -11,6 +12,8 @@ function CabinTable() {
 
   // Loading Spinner
   if (isLoading) return <SpinnerLarge />;
+
+  if (!cabins.length) return <Empty resourceName="cabins" />;
 
   // Filter
   const filterValue = searchParams.get("discount") || "all";
