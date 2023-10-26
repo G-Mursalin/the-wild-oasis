@@ -1,16 +1,26 @@
+import { PAGE_SIZE } from "../utils/constants";
 import { createImagePath } from "../utils/helpers";
 import supabase from "./supabase";
 
 // Get All Cabins
-export async function getCabins() {
-  const { data, error } = await supabase.from("cabins").select("*");
+export async function getCabins({ page }) {
+  let query = supabase.from("cabins").select("*", { count: "exact" });
+
+  // Pagination
+  if (page) {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
 
   if (error) {
     console.error(error);
     throw new Error("Cabins could not be loaded");
   }
 
-  return data;
+  return { data, count };
 }
 
 // Delete a Cabin Via ID

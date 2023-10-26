@@ -5,9 +5,10 @@ import Table from "../../../ui/Table/Table";
 import CabinRow from "../CabinRow/CabinRow";
 import { useCabins } from "../hooks/useCabins";
 import Empty from "../../../ui/Empty/Empty";
+import Pagination from "../../../ui/Pagination/Pagination";
 
 function CabinTable() {
-  const { isLoading, cabins } = useCabins();
+  const { isLoading, cabins, count } = useCabins();
   const [searchParams] = useSearchParams();
 
   // Loading Spinner
@@ -52,7 +53,7 @@ function CabinTable() {
           render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
         />
         <Table.Footer>
-          <p>Footer</p>
+          <Pagination count={count} />
         </Table.Footer>
       </Table>
     </Menus>

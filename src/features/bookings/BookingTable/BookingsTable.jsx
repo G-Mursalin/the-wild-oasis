@@ -7,7 +7,7 @@ import BookingRow from "../BookingRow/BookingRow";
 import { useBookings } from "../hooks/useBookings";
 
 function BookingTable() {
-  const { bookings, isLoading } = useBookings();
+  const { bookings, isLoading, count } = useBookings();
 
   if (isLoading) return <SpinnerLarge />;
 
@@ -32,7 +32,7 @@ function BookingTable() {
           )}
         />
         <Table.Footer>
-          <Pagination count={25} />
+          <Pagination count={count} />
         </Table.Footer>
       </Table>
     </Menus>
