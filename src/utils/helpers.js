@@ -1,3 +1,4 @@
+import { formatDistance, parseISO } from "date-fns";
 import { supabaseUrl } from "../services/supabase";
 
 // Formatting currency to USD
@@ -14,3 +15,11 @@ export const createImagePath = (imageName) => {
 
   return { uniqueImageName, imagePath };
 };
+
+//
+export const formatDistanceFromNow = (dateStr) =>
+  formatDistance(parseISO(dateStr), new Date(), {
+    addSuffix: true,
+  })
+    .replace("about ", "")
+    .replace("in", "In");

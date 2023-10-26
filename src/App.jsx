@@ -11,6 +11,7 @@ import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import Settings from "./pages/Settings/Settings";
 import Users from "./pages/Users/Users";
 import AppLayout from "./ui/AppLayout/AppLayout";
+import BookingDetail from "./features/bookings/BookingDetail/BookingDetail";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ function App() {
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="bookings" element={<Bookings />} />
+            <Route path="bookings/:bookingId" element={<BookingDetail />} />
             <Route path="cabins" element={<Cabins />} />
             <Route path="users" element={<Users />} />
             <Route path="settings" element={<Settings />} />
