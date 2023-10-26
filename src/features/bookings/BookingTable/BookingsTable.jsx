@@ -1,5 +1,6 @@
 import Empty from "../../../ui/Empty/Empty";
 import Menus from "../../../ui/Menus/Menus";
+import Pagination from "../../../ui/Pagination/Pagination";
 import SpinnerLarge from "../../../ui/Spinner/SpinnerLarge/SpinnerLarge";
 import Table from "../../../ui/Table/Table";
 import BookingRow from "../BookingRow/BookingRow";
@@ -30,6 +31,9 @@ function BookingTable() {
             <BookingRow key={booking.id} booking={booking} />
           )}
         />
+        <Table.Footer>
+          <Pagination count={25} />
+        </Table.Footer>
       </Table>
     </Menus>
   );

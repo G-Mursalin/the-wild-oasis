@@ -49,8 +49,13 @@ function Row({ children }) {
   );
 }
 
+function Footer({ children }) {
+  return <footer className={styles.footer}>{children}</footer>;
+}
+
 // Add child components as properties to parent component
 Table.Header = Header;
+Table.Footer = Footer;
 Table.Body = Body;
 Table.Row = Row;
 

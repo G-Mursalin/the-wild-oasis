@@ -51,6 +51,9 @@ function CabinTable() {
           data={sortedCabins}
           render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
         />
+        <Table.Footer>
+          <p>Footer</p>
+        </Table.Footer>
       </Table>
     </Menus>
   );
