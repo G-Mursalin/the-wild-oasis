@@ -12,6 +12,7 @@ import Settings from "./pages/Settings/Settings";
 import Users from "./pages/Users/Users";
 import AppLayout from "./ui/AppLayout/AppLayout";
 import BookingDetail from "./features/bookings/BookingDetail/BookingDetail";
+import CheckInBooking from "./features/check-in-out/CheckInBooking/CheckInBooking";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="bookings" element={<Bookings />} />
             <Route path="bookings/:bookingId" element={<BookingDetail />} />
+            <Route path="checkin/:bookingId" element={<CheckInBooking />} />
             <Route path="cabins" element={<Cabins />} />
             <Route path="users" element={<Users />} />
             <Route path="settings" element={<Settings />} />
