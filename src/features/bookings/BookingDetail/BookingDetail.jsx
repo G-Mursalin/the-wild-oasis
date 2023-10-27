@@ -14,9 +14,13 @@ import ConfirmDelete from "../../../ui/ConfirmDelete/ConfirmDelete";
 import ButtonText from "../../../ui/ButtonText/ButtonText";
 import ButtonGroup from "../../../ui/ButtonGroup/ButtonGroup";
 import BookingDataBox from "../BookingDataBox/BookingDataBox";
+import { useCheckout } from "../../check-in-out/hooks/useCheckOut";
+import { useDeleteBooking } from "../hooks/useDeleteBooking";
 
 function BookingDetail() {
   const { booking, isLoading } = useBooking();
+  const { checkOut, isCheckingOut } = useCheckout();
+  const { deleteBooking, isDeleting } = useDeleteBooking();
 
   const moveBack = useMoveBack();
   const navigate = useNavigate();
@@ -51,7 +55,13 @@ function BookingDetail() {
         )}
 
         {status === "checked-in" && (
-          <Button icon={<HiArrowUpOnSquare />}>Check out</Button>
+          <Button
+            onClick={() => checkOut(bookingId)}
+            icon={<HiArrowUpOnSquare />}
+            disabled={isCheckingOut}
+          >
+            Check out
+          </Button>
         )}
 
         <Modal>
@@ -60,7 +70,15 @@ function BookingDetail() {
           </Modal.Open>
 
           <Modal.Window name="delete">
-            <ConfirmDelete resourceName="booking" />
+            <ConfirmDelete
+              onConfirm={() =>
+                deleteBooking(bookingId, {
+                  onSettled: () => navigate(-1),
+                })
+              }
+              disabled={isDeleting}
+              resourceName="booking"
+            />
           </Modal.Window>
         </Modal>
 

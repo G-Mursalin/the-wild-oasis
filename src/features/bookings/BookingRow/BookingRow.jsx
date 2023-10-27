@@ -14,15 +14,14 @@ import Menus from "../../../ui/Menus/Menus";
 import ConfirmDelete from "../../../ui/ConfirmDelete/ConfirmDelete";
 import { formatCurrency } from "../../../utils/helpers";
 import Tag from "../../../ui/Tag/Tag";
+import { useCheckout } from "../../check-in-out/hooks/useCheckOut";
+import { useDeleteBooking } from "../hooks/useDeleteBooking";
 
 function BookingRow({
   booking: {
     id: bookingId,
-    created_at,
     startDate,
     endDate,
-    numNights,
-    numGuests,
     totalPrice,
     status,
     guests: { fullName: guestName, email },
@@ -30,6 +29,8 @@ function BookingRow({
   },
 }) {
   const navigate = useNavigate();
+  const { checkOut, isCheckingOut } = useCheckout();
+  const { deleteBooking, isDeleting } = useDeleteBooking();
 
   const statusToTagName = {
     unconfirmed: "blue",
@@ -84,7 +85,11 @@ function BookingRow({
             )}
 
             {status === "checked-in" && (
-              <Menus.Button icon={<HiArrowUpOnSquare />}>
+              <Menus.Button
+                onClick={() => checkOut(bookingId)}
+                icon={<HiArrowUpOnSquare />}
+                disabled={isCheckingOut}
+              >
                 Check out
               </Menus.Button>
             )}
@@ -96,7 +101,11 @@ function BookingRow({
         </Menus.Menu>
 
         <Modal.Window name="delete">
-          <ConfirmDelete resourceName="booking" />
+          <ConfirmDelete
+            onConfirm={() => deleteBooking(bookingId)}
+            resourceName="booking"
+            disabled={isDeleting}
+          />
         </Modal.Window>
       </Modal>
     </Table.Row>
