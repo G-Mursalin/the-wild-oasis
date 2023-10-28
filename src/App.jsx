@@ -13,6 +13,7 @@ import Users from "./pages/Users/Users";
 import AppLayout from "./ui/AppLayout/AppLayout";
 import BookingDetail from "./features/bookings/BookingDetail/BookingDetail";
 import CheckInBooking from "./features/check-in-out/CheckInBooking/CheckInBooking";
+import ProtectedRoute from "./ui/ProtectedRoute/ProtectedRoute";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -22,7 +23,13 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route element={<AppLayout />}>
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="bookings" element={<Bookings />} />
