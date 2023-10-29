@@ -1,10 +1,12 @@
-import LogOut from "../../features/authentication/LogOut/LogOut";
+import UserAvatar from "../../features/authentication/UserAvatar/UserAvatar";
+import HeaderMenu from "../HeaderMenu/HeaderMenu";
 import styles from "./Header.module.css";
 
 function Header() {
   return (
     <header className={styles.header}>
-      <LogOut />
+      <UserAvatar />
+      <HeaderMenu />
     </header>
   );
 }
