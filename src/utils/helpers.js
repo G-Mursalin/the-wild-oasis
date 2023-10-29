@@ -16,10 +16,19 @@ export const createImagePath = (imageName, bucketName) => {
   return { uniqueImageName, imagePath };
 };
 
-//
+// Calculate Date distance
 export const formatDistanceFromNow = (dateStr) =>
   formatDistance(parseISO(dateStr), new Date(), {
     addSuffix: true,
   })
     .replace("about ", "")
     .replace("in", "In");
+
+// Set the last second of the day
+export const getToday = function (options = {}) {
+  const today = new Date();
+
+  if (options?.end) today.setUTCHours(23, 59, 59, 999);
+  else today.setUTCHours(0, 0, 0, 0);
+  return today.toISOString();
+};
