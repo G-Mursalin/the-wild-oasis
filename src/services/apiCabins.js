@@ -87,7 +87,10 @@ export async function editCabin(newCabin) {
 
   if (typeof newCabin.image != "string") {
     // 1. Create image path
-    const { uniqueImageName, imagePath } = createImagePath(newCabin.image.name);
+    const { uniqueImageName, imagePath } = createImagePath(
+      newCabin.image.name,
+      "cabin-images"
+    );
     newImagePath = imagePath;
 
     // 2. Upload New Image

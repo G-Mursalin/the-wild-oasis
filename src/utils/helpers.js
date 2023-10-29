@@ -8,10 +8,10 @@ export const formatCurrency = (value) =>
   );
 
 // Creating unique image name and path
-export const createImagePath = (imageName) => {
+export const createImagePath = (imageName, bucketName) => {
   const uniqueImageName = `${imageName}-${Math.random()}`.replaceAll("/", "");
 
-  const imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${uniqueImageName}`;
+  const imagePath = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${uniqueImageName}`;
 
   return { uniqueImageName, imagePath };
 };
