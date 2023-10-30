@@ -16,6 +16,7 @@ import ButtonGroup from "../../../ui/ButtonGroup/ButtonGroup";
 import BookingDataBox from "../BookingDataBox/BookingDataBox";
 import { useCheckout } from "../../check-in-out/hooks/useCheckOut";
 import { useDeleteBooking } from "../hooks/useDeleteBooking";
+import Empty from "../../../ui/Empty/Empty";
 
 function BookingDetail() {
   const { booking, isLoading } = useBooking();
@@ -26,6 +27,7 @@ function BookingDetail() {
   const navigate = useNavigate();
 
   if (isLoading) return <SpinnerLarge />;
+  if (!booking) return <Empty resourceName="booking" />;
 
   const { status, id: bookingId } = booking;
 
