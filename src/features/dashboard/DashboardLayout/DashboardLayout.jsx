@@ -1,4 +1,7 @@
 import SpinnerLarge from "../../../ui/Spinner/SpinnerLarge/SpinnerLarge";
+import { useCabins } from "../../cabins/hooks/useCabins";
+import SalesChart from "../SalesChart/SalesChart";
+import Stats from "../Stats/Stats";
 import { useRecentBookings } from "../hooks/useRecentBookings";
 import { useRecentStays } from "../hooks/useRecentStays";
 import styles from "./DashboardLayout.module.css";
@@ -10,18 +13,22 @@ function DashboardLayout() {
     isLoading: isLoadingRecentStays,
     numDays,
   } = useRecentStays();
+  const { cabins, isLoading: isLoadingCabins } = useCabins();
 
-  if (isLoadingRecentBookings || isLoadingRecentStays) return <SpinnerLarge />;
-
-  console.log(bookings);
-  console.log("ggg", confirmedStays);
+  if (isLoadingRecentBookings || isLoadingRecentStays || isLoadingCabins)
+    return <SpinnerLarge />;
 
   return (
     <div className={styles.dashboardLayout}>
-      <div>1</div>
+      <Stats
+        bookings={bookings}
+        confirmedStays={confirmedStays}
+        numDays={numDays}
+        cabinCount={cabins.length}
+      />
       <div>2</div>
       <div>3</div>
-      <div>4</div>
+      <SalesChart bookings={bookings} numDays={numDays} />
     </div>
   );
 }
