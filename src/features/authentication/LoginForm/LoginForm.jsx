@@ -1,12 +1,12 @@
-import { useState } from "react";
-import Button from "../../../ui/Button/Button";
-import FormRowVertical from "../../../ui/FormRowVertical/FormRowVertical";
-import { useLogin } from "../hooks/useLogin";
-import SpinnerMini from "../../../ui/Spinner/SpinnerMini/SpinnerMini";
+import { useState } from 'react';
+import Button from '../../../ui/Button/Button';
+import FormRowVertical from '../../../ui/FormRowVertical/FormRowVertical';
+import { useLogin } from '../hooks/useLogin';
+import SpinnerMini from '../../../ui/Spinner/SpinnerMini/SpinnerMini';
 
 function LoginForm() {
-  const [email, setEmail] = useState("test@gmail.com");
-  const [password, setPassword] = useState("123456789");
+  const [email, setEmail] = useState('golammursalin309@gmail.com');
+  const [password, setPassword] = useState('123456789');
   const { login, isLoading } = useLogin();
 
   const handleSubmit = (e) => {
@@ -16,8 +16,8 @@ function LoginForm() {
       { email, password },
       {
         onSuccess: () => {
-          setEmail("");
-          setPassword("");
+          setEmail('');
+          setPassword('');
         },
       }
     );
@@ -47,7 +47,7 @@ function LoginForm() {
       </FormRowVertical>
       <FormRowVertical>
         <Button type="submit" size="large">
-          {isLoading ? <SpinnerMini /> : "Login"}
+          {isLoading ? <SpinnerMini /> : 'Login'}
         </Button>
       </FormRowVertical>
     </form>
